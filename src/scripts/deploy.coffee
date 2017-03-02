@@ -76,7 +76,7 @@ module.exports = (robot) ->
       if robot.adapterName is "hipchat"
         if msg.envelope.user.reply_to?
           deployment.room = msg.envelope.user.reply_to
-          
+
       if robot.adapterName is "slack"
         deployment.user = user.name
         deployment.room = robot.adapter.client.rtm.dataStore.getChannelGroupOrDMById(msg.message.user.room).name
@@ -105,6 +105,7 @@ module.exports = (robot) ->
     yubikey = msg.match[7]
 
     deployment = new Deployment(name, ref, task, env, force, hosts)
+    roomName = robot.adapter.client.rtm.dataStore.getChannelGroupOrDMById(msg.message.user.room).name
 
     unless deployment.isValidApp()
       msg.reply "#{name}? Never heard of it."
@@ -112,7 +113,7 @@ module.exports = (robot) ->
     unless deployment.isValidEnv()
       msg.reply "#{name} doesn't seem to have an #{env} environment."
       return
-    unless deployment.isAllowedRoom(msg.message.user.room)
+    unless deployment.isAllowedRoom(roomName)
       msg.reply "#{name} is not allowed to be deployed from this room."
       return
 
@@ -134,7 +135,7 @@ module.exports = (robot) ->
 
     if robot.adapterName is "slack"
       deployment.user = user.name
-      deployment.room = robot.adapter.client.rtm.dataStore.getChannelGroupOrDMById(msg.message.user.room).name
+      deployment.room = roomName
 
     deployment.yubikey   = yubikey
     deployment.adapter   = robot.adapterName

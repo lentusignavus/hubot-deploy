@@ -1,6 +1,6 @@
 {
   "name": "hubot-deploy-lentus",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Kareem March <lentusignavus@gmail.com>",
   "description": "hubot script for GitHub Deployments - a fork of the deprecated https://github.com/atmos/hubot-deploy library",
   "main": "index.coffee",
